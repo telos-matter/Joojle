@@ -23,8 +23,41 @@ public class Searcher {
 		assert query != null;
 		assert set != null;
 		
+//		List<Function> result = new LinkedList<>();
+//		for (Function function : set) {
+//			if (function.getSignature().equals(query)) {
+//				result.add(function);
+//			}
+//		}
 		
-		return null;
+		return set
+				.stream()
+				.sorted((Function f1, Function f2) -> {
+					return Integer.compare(lev(query, f1.getSignature()), lev(query, f2.getSignature()));
+					})
+				.toList();
+	}
+	
+	private static int lev (String a, String b) {
+		if (b.length() == 0) {
+			return a.length();
+			
+		} else if (a.length() == 0) {
+			return b.length();
+			
+		} else if (a.charAt(0) == b.charAt(0)) {
+			return lev(a.substring(1), b.substring(1));
+			
+		} else {
+			return 1 +min(
+					lev(a.substring(1), b),
+					lev(a, b.substring(1)),
+					lev(a.substring(1), b.substring(1)));
+		}
+	}
+	
+	private static int min (int a, int b, int c) {
+		return Math.min(a, Math.min(b, c));
 	}
 	
 	/**
@@ -39,6 +72,9 @@ public class Searcher {
 		return null;
 	}
 	
+	/**
+	 * @return the signature of an {@link Executable}
+	 */
 	public static String forgeSignature (Executable executable) {
 		StringBuilder signature = new StringBuilder();
 		

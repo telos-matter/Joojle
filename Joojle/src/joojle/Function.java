@@ -22,7 +22,7 @@ public class Function {
 	
 	@Override
 	public String toString() {
-		return getSignature();
+		return executable.toString();
 	}
 	
 }
