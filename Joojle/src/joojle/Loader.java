@@ -1,8 +1,9 @@
 package joojle;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,28 +13,18 @@ import java.util.jar.JarFile;
 public class Loader {
 
 	/**
-	 * Where all the loaded classes are  kept
+	 * Where all the loaded {@link Method}s and {@link Constructor}s are kept
 	 */
-	public static final List<Class<?>> LOADED_CLASSES = new LinkedList<>();
+	public static final List<Function> LOADED_METHODS = new LinkedList<>();
 	
 	/**
-	 * Same as {@link #loadFrom(String, Collection)}
-	 * but uses {@link #LOADED_CLASSES}
-	 */
-	public static void loadFrom (String jarFilePath) throws Exception {
-		loadFrom(jarFilePath, LOADED_CLASSES);
-	}
-	
-	/**
-	 * Loads all the available classes of the passed in jar file path
-	 * into <code>classes</code>
+	 * Loads all the available {@link Method}s and {@link Constructor}s
+	 * of all the available {@link Class}es of the passed in jar file path
 	 * 
 	 * @param jarFilePath
-	 * @param classes
 	 * @throws Exception - If something went wrong
 	 */
-	public static void loadFrom (String jarFilePath, Collection<Class<?>> classes) throws Exception {
-		assert classes != null;
+	public static void loadFrom (String jarFilePath) throws Exception {
 		assert jarFilePath != null;
 		
 		try (JarFile jarFile = new JarFile(jarFilePath)) {
@@ -51,12 +42,31 @@ public class Loader {
 					
 					try {
 						Class<?> loadedClass = classLoader.loadClass(className);
-						classes.add(loadedClass);
+						loadAllFromClass(loadedClass);
 					} catch (ClassNotFoundException e) {
 						System.err.println(String.format("Couldn't load this class: `%s`\nReason: `%s`", className, e.getMessage()));
 					}
 				}
 			}
+		}
+	}
+	
+	// TODO make private, only public to be able to test
+	/**
+	 * Loads all the available {@link Method}s
+	 * and {@link Constructor}s from the {@link Class}
+	 * 
+	 * @param clazz
+	 */
+	public static void loadAllFromClass (Class<?> clazz) {
+		assert clazz != null;
+		
+		for (Method method : clazz.getDeclaredMethods()) {
+			LOADED_METHODS.add(new Function(method, false));
+		}
+		
+		for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
+			LOADED_METHODS.add(new Function(constructor, true));
 		}
 	}
 	
