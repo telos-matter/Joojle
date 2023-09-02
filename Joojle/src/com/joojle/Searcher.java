@@ -1,12 +1,9 @@
-package joojle;
+package com.joojle;
 
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Executable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 public class Searcher {
 
@@ -18,42 +15,45 @@ public class Searcher {
 	 * @param query
 	 * @param set
 	 * @return a sorted subset of <code>set</code> that contains the matches
+	 * in the form of {@link Result}
 	 */
-	public static Collection<Function> search (String query, Collection<Function> set) {
+	public static Collection<Result> search (String query, Collection<Function> set) {
 		assert query != null;
 		assert set != null;
 		
-//		List<Function> result = new LinkedList<>();
-//		for (Function function : set) {
-//			if (function.getSignature().equals(query)) {
-//				result.add(function);
-//			}
-//		}
-		
 		return set
 				.stream()
-				.sorted((Function f1, Function f2) -> {
-					return Integer.compare(lev(query, f1.getSignature()), lev(query, f2.getSignature()));
-					})
+				.map(function -> new Result(function, query))
+				.sorted()
 				.toList();
 	}
 	
-	private static int lev (String a, String b) {
-		if (b.length() == 0) {
-			return a.length();
-			
-		} else if (a.length() == 0) {
-			return b.length();
-			
-		} else if (a.charAt(0) == b.charAt(0)) {
-			return lev(a.substring(1), b.substring(1));
-			
-		} else {
-			return 1 +min(
-					lev(a.substring(1), b),
-					lev(a, b.substring(1)),
-					lev(a.substring(1), b.substring(1)));
+	/**
+	 * Returns the levenschtein distance between the two {@link String}s
+	 */
+	public static int lev (String a, String b) {
+		int n = a.length();
+		int m = b.length();
+		int [][] distance = new int[n +1][m +1];
+		
+		distance[0][0] = 0;
+		for (int i = 1; i <= n; i++) {
+			distance[i][0] = i;
 		}
+		for (int j = 1; j <= m; j++) {
+			distance[0][j] = j;
+		}
+		
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= m; j++) {
+				distance[i][j] = min(
+						distance[i -1][j] +1,
+						distance[i][j -1] +1,
+						distance[i -1][j -1] +((a.charAt(i -1) == b.charAt(j -1))? 0 : 1));
+			}
+		}
+		
+		return distance[n][m];
 	}
 	
 	private static int min (int a, int b, int c) {
@@ -61,10 +61,6 @@ public class Searcher {
 	}
 	
 	/**
-	 * @param query
-	 * @return a normalized query or <code>null</code> if
-	 * it failed to
-	 * this before search search takes normalized
 	 */
 	public static String normalizeQuery (String query) {
 		assert query != null;

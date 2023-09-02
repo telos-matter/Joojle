@@ -1,4 +1,4 @@
-package joojle;
+package com.joojle;
 
 import java.lang.reflect.Executable;
 
@@ -17,7 +17,7 @@ public class Function {
 	}
 	
 	public String getSignature () {
-		return this.signature;
+		return signature;
 	}
 	
 	@Override
