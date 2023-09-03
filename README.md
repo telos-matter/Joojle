@@ -3,8 +3,8 @@
 A knockoff version of Hoogle but for Java.
 <br>
 **Heavily** inspired by <a href="https://www.twitch.tv/tsoding">Tsoding</a>, more
-specifically from these <a href="https://youtube.com/playlist?list=PLpM-Dvs8t0VYhYLxY-i7OcvBbDsG4izam&si=aBJkIpS3pjflStvS">streams</a>, pretty much a translation
-of what he did to Java, no new concept on my part
+specifically from these <a href="https://youtube.com/playlist?list=PLpM-Dvs8t0VYhYLxY-i7OcvBbDsG4izam&si=aBJkIpS3pjflStvS">streams</a>. Pretty much a translation
+of what he did to Java, no new concept from me
 
 ## How-to
 ### Usage:
