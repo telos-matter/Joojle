@@ -1,4 +1,4 @@
-package com.joojle;
+package joojle;
 
 import java.lang.reflect.Executable;
 
@@ -20,9 +20,13 @@ public class Function {
 		return signature;
 	}
 	
+	public boolean getIsConstructor () {
+		return isConstructor;
+	}
+	
 	@Override
 	public String toString() {
-		return executable.toString();
+		return executable.toString() +((isConstructor)? " [CONSTRUCTOR]" : "");
 	}
 	
 }

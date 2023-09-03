@@ -1,4 +1,4 @@
-package com.joojle;
+package joojle;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -15,7 +15,7 @@ public class Loader {
 	/**
 	 * Where all the loaded {@link Method}s and {@link Constructor}s are kept
 	 */
-	public static final List<Function> LOADED_METHODS = new LinkedList<>();
+	public static final List<Function> LOADED_FUNCTIONS = new LinkedList<>();
 	
 	/**
 	 * Loads all the available {@link Method}s and {@link Constructor}s
@@ -30,7 +30,7 @@ public class Loader {
 		try (JarFile jarFile = new JarFile(jarFilePath)) {
 			Enumeration <JarEntry> entries = jarFile.entries();
 			
-			URL[] urls = { new URL("jar:file:" + jarFilePath + "!/") };
+			URL[] urls = {new URL("jar:file:" + jarFilePath + "!/")};
 			URLClassLoader classLoader = URLClassLoader.newInstance(urls);
 			
 			while (entries.hasMoreElements()) {
@@ -42,7 +42,7 @@ public class Loader {
 					
 					try {
 						Class<?> loadedClass = classLoader.loadClass(className);
-						loadAllFromClass(loadedClass);
+						LOADED_FUNCTIONS.addAll(loadAllFromClass(loadedClass));
 					} catch (ClassNotFoundException e) {
 						System.err.println(String.format("Couldn't load this class: `%s`\nReason: `%s`", className, e.getMessage()));
 					}
@@ -51,23 +51,24 @@ public class Loader {
 		}
 	}
 	
-	// TODO make private, only public to be able to test
 	/**
 	 * Loads all the available {@link Method}s
 	 * and {@link Constructor}s from the {@link Class}
-	 * 
-	 * @param clazz
+	 * and returns them as a {@link List}
 	 */
-	public static void loadAllFromClass (Class<?> clazz) {
+	public static List<Function> loadAllFromClass (Class<?> clazz) {
 		assert clazz != null;
+		var list = new LinkedList<Function>();
 		
 		for (Method method : clazz.getDeclaredMethods()) {
-			LOADED_METHODS.add(new Function(method, false));
+			list.add(new Function(method, false));
 		}
 		
 		for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
-			LOADED_METHODS.add(new Function(constructor, true));
+			list.add(new Function(constructor, true));
 		}
+		
+		return list;
 	}
 	
 }

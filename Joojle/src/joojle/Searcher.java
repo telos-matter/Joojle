@@ -1,4 +1,4 @@
-package com.joojle;
+package joojle;
 
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Executable;
@@ -61,14 +61,6 @@ public class Searcher {
 	}
 	
 	/**
-	 */
-	public static String normalizeQuery (String query) {
-		assert query != null;
-		
-		return null;
-	}
-	
-	/**
 	 * @return the signature of an {@link Executable}
 	 */
 	public static String forgeSignature (Executable executable) {
@@ -90,6 +82,10 @@ public class Searcher {
 		return signature.toString();
 	}
 	
+	/**
+	 * Retrieves the typeName from an {@link AnnotatedType}
+	 * and cleans it
+	 */
 	private static String getTypeName (AnnotatedType annotatedType) {
 		assert annotatedType != null;
 		String type = annotatedType.getType().getTypeName();

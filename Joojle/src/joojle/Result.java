@@ -1,8 +1,9 @@
-package com.joojle;
+package joojle;
 
 public class Result implements Comparable<Result> {
 
 	private Function function;
+	@SuppressWarnings("unused")
 	private String query;
 	private int score;
 	
@@ -13,7 +14,7 @@ public class Result implements Comparable<Result> {
 	}
 	
 	public int getScore () {
-		return this.score;
+		return score;
 	}
 
 	@Override
@@ -23,7 +24,7 @@ public class Result implements Comparable<Result> {
 
 	@Override
 	public String toString() {
-		return String.format("%d: %s", score, function);
+		return String.format("%s", function);
 	}
 	
 }
