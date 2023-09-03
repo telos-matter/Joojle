@@ -8,7 +8,7 @@ of what he did to Java, no new concept from me
 
 ## How-to
 ### Usage:
-Currently there is no user interface, planing on adding that later on, but atm it works like so:
+Currently there is no user interface, maybe would add one later on, but atm compile the source code and:
 ```console
 $ java joojle/Joojle 'path/to/the/jar/file.jar' 'query_of_the_signature_your_are_looking_for'
 ```
