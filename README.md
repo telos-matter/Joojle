@@ -1,5 +1,7 @@
 # Joojle
 
+![Version 2 in progress](https://badgen.net/badge/STATUS/complete/green)
+
 A knockoff version of Hoogle but for Java.
 <br>
 **Heavily** inspired by <a href="https://www.twitch.tv/tsoding">Tsoding</a>, more
