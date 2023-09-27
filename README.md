@@ -1,6 +1,4 @@
-# Joojle
-
-![Version 2 in progress](https://badgen.net/badge/STATUS/complete/green)
+# Joojle &nbsp; ![DEVELOPMENT STATUS: working version](https://badgen.net/badge/DEVELOPMENT%20STATUS/working%20version/green)
 
 A knockoff version of Hoogle but for Java.
 <br>
