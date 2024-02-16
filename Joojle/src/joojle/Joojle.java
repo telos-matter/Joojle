@@ -1,5 +1,7 @@
 package joojle;
 
+// TODO: refactor to Main.java
+
 /**
  * Link to the Github <a href="https://github.com/telos-matter/Joojle">repo</a>
  *
