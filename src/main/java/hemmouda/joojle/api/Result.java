@@ -1,4 +1,4 @@
-package joojle;
+package hemmouda.joojle.api;
 
 public class Result implements Comparable<Result> {
 

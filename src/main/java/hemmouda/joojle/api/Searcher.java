@@ -1,4 +1,4 @@
-package joojle;
+package hemmouda.joojle.api;
 
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Executable;
@@ -97,14 +97,14 @@ public class Searcher {
 	
 	/**
 	 * The hardest ones are typed ones with nested classes, example:
-	 * java.util.Map<? extends joojle.Joojle$Subclass, ? extends joojle.Joojle$Subclass>
+	 * java.util.Map<? extends hemmouda.joojle.api.Joojle$Subclass, ? extends hemmouda.joojle.api.Joojle$Subclass>
 	 * 
 	 * It could also be double nested ext..
-	 * java.util.Map<? extends joojle.Joojle$Subclass<joojle.Joojle$Subclass2,joojle.Joojle$Subclass2>,? extends joojle.Joojle$Subclass<joojle.Joojle$Subclass2,joojle.Joojle$Subclass2>>
+	 * java.util.Map<? extends hemmouda.joojle.api.Joojle$Subclass<hemmouda.joojle.api.Joojle$Subclass2,hemmouda.joojle.api.Joojle$Subclass2>,? extends hemmouda.joojle.api.Joojle$Subclass<hemmouda.joojle.api.Joojle$Subclass2,hemmouda.joojle.api.Joojle$Subclass2>>
 	 * 
 	 * Normal examples:
 	 * java.lang.String
-	 * joojle.Joojle$Subclass
+	 * hemmouda.joojle.api.Joojle$Subclass
 	 * 
 	 * Simplest are the primitives ofc
 	 */

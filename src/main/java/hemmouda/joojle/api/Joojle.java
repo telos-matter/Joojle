@@ -1,4 +1,4 @@
-package joojle;
+package hemmouda.joojle.api;
 
 // TODO: refactor to Main.java
 
