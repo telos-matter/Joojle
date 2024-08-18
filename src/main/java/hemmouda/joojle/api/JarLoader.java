@@ -18,13 +18,18 @@ import java.util.jar.JarFile;
 public class JarLoader {
 
 	/**
+	 * The JAR files extension
+	 */
+	public static final String JAR_FILE_EXTENSION = ".jar";
+
+	/**
 	 * Loads all the available {@link Method}s and {@link Constructor}s
 	 * of all the available {@link Class}es within the given
 	 * jar file.
 	 *
 	 * @throws Exception if something went wrong.
 	 */
-	public static List<MethodRecord> load (String jarFilePath) throws Exception {
+	public static List<MethodRecord> load (String jarFilePath) throws Throwable {
 		if (jarFilePath == null) {
 			throw new AssertionError("JarFilePath cannot be null.");
 		}
