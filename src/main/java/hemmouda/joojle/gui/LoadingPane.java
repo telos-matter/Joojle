@@ -47,7 +47,7 @@ public class LoadingPane extends WindowPane {
             var list = JarLoader.load(jarFile.getAbsolutePath());
             // If all went well, display it and go to next window
             displayLabel.setText("The JAR file finished processing");
-            parent.showSearchWindow(list);
+            parent.showSearchWindow(jarFile.getPath(), list);
         } catch (Throwable throwable) {
             // If an error occurred, show the message
             ErrorWindow.show("The provided JAR file could not be processed because of: " +throwable.getLocalizedMessage());
