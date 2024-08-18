@@ -20,7 +20,7 @@ public class JarLoader {
 	/**
 	 * The JAR files extension
 	 */
-	public static final String JAR_FILE_EXTENSION = ".jar";
+	public static final String JAR_FILE_EXTENSION = "jar";
 
 	/**
 	 * Loads all the available {@link Method}s and {@link Constructor}s
