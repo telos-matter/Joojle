@@ -73,8 +73,9 @@ public class Window extends JFrame {
         pane.startLoadingJarFile();
     }
 
-    public void showSearchWindow (List<MethodRecord> loadedMethods) {
-        System.out.println("mli7"+loadedMethods.size());
+    public void showSearchWindow (String jarFilePath, List<MethodRecord> loadedMethods) {
+        var pane = new SearchPane(this, jarFilePath, loadedMethods);
+        showWindow(pane);
     }
 
 }
