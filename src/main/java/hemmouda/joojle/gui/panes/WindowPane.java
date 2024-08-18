@@ -1,4 +1,6 @@
-package hemmouda.joojle.gui;
+package hemmouda.joojle.gui.panes;
+
+import hemmouda.joojle.gui.Window;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +13,7 @@ import java.awt.*;
  */
 public abstract class WindowPane extends JPanel {
 
-    protected Window parent;
+    protected hemmouda.joojle.gui.Window parent;
 
     public WindowPane (Window parent) {
         super();

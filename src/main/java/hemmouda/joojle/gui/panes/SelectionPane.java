@@ -1,6 +1,9 @@
-package hemmouda.joojle.gui;
+package hemmouda.joojle.gui.panes;
 
 import hemmouda.joojle.api.JarLoader;
+import hemmouda.joojle.gui.ErrorWindow;
+import hemmouda.joojle.gui.Window;
+import hemmouda.joojle.gui.panes.WindowPane;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

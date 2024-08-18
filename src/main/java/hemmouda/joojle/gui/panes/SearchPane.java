@@ -1,8 +1,9 @@
-package hemmouda.joojle.gui;
+package hemmouda.joojle.gui.panes;
 
 import hemmouda.joojle.api.core.MethodRecord;
+import hemmouda.joojle.gui.Window;
+import hemmouda.joojle.gui.panes.WindowPane;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
