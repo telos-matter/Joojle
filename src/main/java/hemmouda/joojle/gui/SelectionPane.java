@@ -59,6 +59,7 @@ public class SelectionPane extends WindowPane {
         chooseFileButton.addActionListener(e -> {
             // Create the file chooser
             JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setMultiSelectionEnabled(false);
             // Set it up to only accept JARs
             var filter = new FileNameExtensionFilter("JAR files", JarLoader.JAR_FILE_EXTENSION);
             fileChooser.setFileFilter(filter);
