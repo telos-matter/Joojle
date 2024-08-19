@@ -1,4 +1,4 @@
-package hemmouda.joojle.api.core;
+package hemmouda.joojle.api.core.methodinfo;
 
 import java.lang.reflect.Executable;
 import java.lang.reflect.Modifier;

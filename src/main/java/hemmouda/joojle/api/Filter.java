@@ -1,9 +1,9 @@
 package hemmouda.joojle.api;
 
 import hemmouda.joojle.api.core.MethodRecord;
-import hemmouda.joojle.api.core.MethodScope;
-import hemmouda.joojle.api.core.MethodType;
-import hemmouda.joojle.api.core.MethodVisibility;
+import hemmouda.joojle.api.core.methodinfo.MethodScope;
+import hemmouda.joojle.api.core.methodinfo.MethodType;
+import hemmouda.joojle.api.core.methodinfo.MethodVisibility;
 
 import java.util.LinkedList;
 import java.util.List;

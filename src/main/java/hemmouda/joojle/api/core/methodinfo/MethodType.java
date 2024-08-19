@@ -1,4 +1,4 @@
-package hemmouda.joojle.api.core;
+package hemmouda.joojle.api.core.methodinfo;
 
 /**
  * The type of the method, is
