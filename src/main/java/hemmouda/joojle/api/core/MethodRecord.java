@@ -1,39 +1,78 @@
 package hemmouda.joojle.api.core;
 
-import hemmouda.joojle.api.Searcher;
-
 import java.lang.reflect.Executable;
 
 /**
- * <p>Represents a method.</p>
- * <p>Constructors are also methods. And
- * they are distinguished by the {@link #isConstructor}
- * field.</p>
+ * <p>Holds and represents a method,
+ * and the information needed about this
+ * method.</p>
+ * <p>Constructors are also methods.</p>
  */
-public record MethodRecord(
-		Executable executable,
-		boolean isConstructor,
-		String signature
-) {
+// This shit is a class and not a
+// record simply because of the
+// canonical constructor constraint.
+public class MethodRecord {
 
-	public MethodRecord(Executable executable, boolean isConstructor, String signature) {
-		if (executable == null) {
-			throw new AssertionError("Executable cannot be null.");
-		}
+	/**
+	 * The method or constructor itself.
+	 */
+	private final Executable executable;
 
+	/**
+	 * Is it a method or a constructor.
+	 */
+	private final MethodType type;
+	/**
+	 * The visibility of this method
+	 */
+	private final MethodVisibility visibility;
+	/**
+	 * Is this an instance method or a class method
+	 */
+	private final MethodScope scope;
+
+	/**
+	 * This methods' signature. What
+	 * the user's query will be tested
+	 * against.
+	 */
+	private final String signature;
+
+	public MethodRecord(Executable executable, boolean isConstructor) {
 		this.executable = executable;
-		this.isConstructor = isConstructor;
+
+		this.type = (isConstructor)? MethodType.CONSTRUCTOR : MethodType.METHOD;
+		this.visibility = MethodVisibility.getVisibility(executable);
+		this.scope = MethodScope.getScope(executable);
+
 		this.signature = SignatureForger.forgeSignature(executable); // TODO is this where we should get this?
 	}
 
-	public MethodRecord(Executable executable, boolean isConstructor) {
-		this(executable, isConstructor, null);
+	public MethodType getType () {
+		return type;
 	}
 
+	public MethodVisibility getVisibility () {
+		return visibility;
+	}
+
+	public MethodScope getScope () {
+		return scope;
+	}
+
+	public String getSignature () {
+		return signature;
+	}
+
+	/**
+	 * @return the representation
+	 * to show the user.
+	 */
 	@Override
 	public String toString() {
 		// TODO recheck
-		return executable.toString() +((isConstructor)? " [CONSTRUCTOR]" : "");
+		// This is what we used to print
+//		return executable.toString() +((isConstructor)? " [CONSTRUCTOR]" : "");
+		return executable.toString();
 	}
-	
 }
