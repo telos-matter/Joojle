@@ -1,5 +1,10 @@
 package hemmouda.joojle.api.core;
 
+import hemmouda.joojle.api.SignatureForger;
+import hemmouda.joojle.api.core.methodinfo.MethodScope;
+import hemmouda.joojle.api.core.methodinfo.MethodType;
+import hemmouda.joojle.api.core.methodinfo.MethodVisibility;
+
 import java.lang.reflect.Executable;
 
 /**
@@ -45,7 +50,7 @@ public class MethodRecord {
 		this.visibility = MethodVisibility.getVisibility(executable);
 		this.scope = MethodScope.getScope(executable);
 
-		this.signature = SignatureForger.forgeSignature(executable); // TODO is this where we should get this?
+		this.signature = SignatureForger.forgeSignature(executable);
 	}
 
 	public MethodType getType () {
