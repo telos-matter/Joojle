@@ -25,7 +25,7 @@ public class Filter {
      * If a "filter" is <code>null</code>
      * it's skipped.
      */
-    public List<MethodRecord> filter (
+    public static List<MethodRecord> filter (
             List<MethodRecord> list,
             MethodType type,
             MethodVisibility visibility,
