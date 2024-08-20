@@ -1,18 +1,23 @@
 package hemmouda.joojle.gui;
 
-import hemmouda.joojle.gui.Window;
-
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * TODO mention that it could have been done with reseting the objects or reusing them
- * but whatever, not that much of memory use
- * also say that the pane communicates with the window to tell it
- * what to do next
+ * <p>Base class of the different Panels that are shown
+ * as the ContentPane in the main Window.</p>
+ * <p>It's these panels that guide
+ * the application by telling the window
+ * what to show next.</p>
+ * <p>Since there is only ever one window, the implementations
+ * could be singletons that reset the fields if they
+ * are re-used but that's too much work.</p>
  */
 public abstract class WindowPane extends JPanel {
 
+    /**
+     * The main window
+     */
     protected hemmouda.joojle.gui.Window parent;
 
     public WindowPane (Window parent) {
