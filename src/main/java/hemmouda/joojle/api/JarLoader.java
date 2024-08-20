@@ -3,6 +3,7 @@ package hemmouda.joojle.api;
 import hemmouda.joojle.api.core.MethodRecord;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URL;
@@ -10,6 +11,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
+import java.util.regex.Pattern;
 
 /**
  * A utility class that loads
@@ -21,6 +23,11 @@ public class JarLoader {
 	 * The JAR files extension
 	 */
 	public static final String JAR_FILE_EXTENSION = "jar";
+
+	/**
+	 * Lambda functions name pattern
+	 */
+	private static final Pattern LAMBDA_PATTERN = Pattern.compile("\\$\\d+$");
 
 	/**
 	 * Loads all the available {@link Method}s and {@link Constructor}s
@@ -78,15 +85,28 @@ public class JarLoader {
 
 		// Iterate over the methods
 		for (Method method : clazz.getDeclaredMethods()) {
-			list.add(new MethodRecord(method, false));
+			if (!shouldSkip(method)) {
+				list.add(new MethodRecord(method, false));
+			}
 		}
 
 		// Iterate over the constructors
 		for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
-			list.add(new MethodRecord(constructor, true));
+			if (!shouldSkip(constructor)) {
+				list.add(new MethodRecord(constructor, true));
+			}
 		}
 		
 		return list;
 	}
-	
+
+	/**
+	 * We skip synthesized executables and
+	 * lambda expressions.
+	 */
+	private static boolean shouldSkip (Executable executable) {
+		return executable.isSynthetic() ||
+				LAMBDA_PATTERN.matcher(executable.getName()).find();
+	}
+
 }
