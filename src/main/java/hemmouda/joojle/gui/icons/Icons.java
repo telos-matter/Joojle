@@ -15,8 +15,8 @@ public class Icons {
     public static final ImageIcon HELP_ICON;
 
     static {
-        RETURN_ICON = loadImageIcon("return.png", 25, 25);
-        HELP_ICON = loadImageIcon("help.png", 25, 25);
+        RETURN_ICON = loadImageIcon("return.png", 18, 18);
+        HELP_ICON = loadImageIcon("help.png", 18, 18);
     }
 
     private static ImageIcon loadImageIcon (String name, int width, int height) {
