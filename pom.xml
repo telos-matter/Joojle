@@ -4,13 +4,13 @@
 
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>telos-matter</groupId>
+    <groupId>hemmouda</groupId>
     <artifactId>joojle</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
     <packaging>jar</packaging>
 
     <name>Joojle</name>  
-    <description>Knockoff of Hoogle but for Java</description>
+    <description>A knockoff of Hoogle but for Java</description>
     <url>https://github.com/telos-matter/Joojle</url>
     
     <properties>
@@ -56,6 +56,20 @@
                 </executions>
                 <configuration>
                     <mainClass>${java.mainClass}</mainClass>
+                </configuration>
+            </plugin>
+            
+            <!-- mvn package -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${java.mainClass}</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>
