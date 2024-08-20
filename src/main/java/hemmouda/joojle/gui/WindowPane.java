@@ -1,4 +1,4 @@
-package hemmouda.joojle.gui.panes;
+package hemmouda.joojle.gui;
 
 import hemmouda.joojle.gui.Window;
 

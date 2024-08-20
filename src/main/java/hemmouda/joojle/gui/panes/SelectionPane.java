@@ -1,9 +1,9 @@
 package hemmouda.joojle.gui.panes;
 
 import hemmouda.joojle.api.JarLoader;
-import hemmouda.joojle.gui.ErrorWindow;
+import hemmouda.joojle.gui.util.MessageWindow;
 import hemmouda.joojle.gui.Window;
-import hemmouda.joojle.gui.panes.WindowPane;
+import hemmouda.joojle.gui.WindowPane;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -52,7 +52,7 @@ public class SelectionPane extends WindowPane {
                     }
 
                 } catch (Exception e) {
-                    ErrorWindow.show("Couldn't drop the file because of: " +e.getLocalizedMessage());
+                    MessageWindow.showError("Couldn't drop the file because of: " +e.getLocalizedMessage());
                 }
             }
         });
