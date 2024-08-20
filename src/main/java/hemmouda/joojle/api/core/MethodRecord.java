@@ -2,7 +2,7 @@ package hemmouda.joojle.api.core;
 
 import hemmouda.joojle.api.SignatureForger;
 import hemmouda.joojle.api.core.methodinfo.MethodScope;
-import hemmouda.joojle.api.core.methodinfo.MethodType;
+import hemmouda.joojle.api.core.methodinfo.MethodKind;
 import hemmouda.joojle.api.core.methodinfo.MethodVisibility;
 
 import java.lang.reflect.Executable;
@@ -26,7 +26,7 @@ public class MethodRecord {
 	/**
 	 * Is it a method or a constructor.
 	 */
-	private final MethodType type;
+	private final MethodKind kind;
 	/**
 	 * The visibility of this method
 	 */
@@ -46,15 +46,15 @@ public class MethodRecord {
 	public MethodRecord(Executable executable, boolean isConstructor) {
 		this.executable = executable;
 
-		this.type = (isConstructor)? MethodType.CONSTRUCTOR : MethodType.METHOD;
+		this.kind = (isConstructor)? MethodKind.CONSTRUCTOR : MethodKind.METHOD;
 		this.visibility = MethodVisibility.getVisibility(executable);
 		this.scope = MethodScope.getScope(executable);
 
 		this.signature = SignatureForger.forgeSignature(executable);
 	}
 
-	public MethodType getType () {
-		return type;
+	public MethodKind getKind() {
+		return kind;
 	}
 
 	public MethodVisibility getVisibility () {
@@ -78,6 +78,7 @@ public class MethodRecord {
 		// TODO recheck
 		// This is what we used to print
 //		return executable.toString() +((isConstructor)? " [CONSTRUCTOR]" : "");
-		return executable.toString();
+//		return executable.toString();
+		return signature + " -> " + executable.toString() +" -> " + executable.getName(); // to test
 	}
 }
