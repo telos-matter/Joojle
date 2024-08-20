@@ -1,9 +1,9 @@
 package hemmouda.joojle.gui.panes;
 
 import hemmouda.joojle.api.JarLoader;
-import hemmouda.joojle.gui.ErrorWindow;
+import hemmouda.joojle.gui.util.MessageWindow;
 import hemmouda.joojle.gui.Window;
-import hemmouda.joojle.gui.panes.WindowPane;
+import hemmouda.joojle.gui.WindowPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +18,7 @@ public class LoadingPane extends WindowPane {
     /**
      * The loaded JAR file.
      */
-    private File jarFile;
+    private final File jarFile;
     /**
      * The main label to show the information.
      */
@@ -53,7 +53,7 @@ public class LoadingPane extends WindowPane {
             parent.showSearchWindow(jarFile.getPath(), list);
         } catch (Throwable throwable) {
             // If an error occurred, show the message
-            ErrorWindow.show("The provided JAR file could not be processed because of: " +throwable.getLocalizedMessage());
+            MessageWindow.showError("The provided JAR file could not be processed because of:\n" +throwable.getLocalizedMessage());
             // And go back to the selection window
             parent.showSelectionWindow();
         }
@@ -66,6 +66,6 @@ public class LoadingPane extends WindowPane {
 
     @Override
     public String getPreferredTitle() {
-        return "Processing JAR file";
+        return "Processing JAR file - " + jarFile.getAbsolutePath();
     }
 }
