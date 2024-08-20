@@ -4,7 +4,6 @@ import hemmouda.joojle.api.core.MethodRecord;
 import hemmouda.joojle.gui.panes.LoadingPane;
 import hemmouda.joojle.gui.panes.SearchPane;
 import hemmouda.joojle.gui.panes.SelectionPane;
-import hemmouda.joojle.gui.panes.WindowPane;
 
 import javax.swing.*;
 import java.io.File;
@@ -62,8 +61,10 @@ public class Window extends JFrame {
      * Show the selection pane on the window
      */
     public void showSelectionWindow () {
-        var pane = new SelectionPane(this);
-        showWindow(pane);
+        SwingUtilities.invokeLater(() -> {
+            var pane = new SelectionPane(this);
+            showWindow(pane);
+        });
     }
 
     /**
@@ -71,15 +72,22 @@ public class Window extends JFrame {
      * jar file is loading.
      */
     public void showLoadingWindow (File jarFile) {
-        var pane = new LoadingPane(this, jarFile);
-        showWindow(pane);
+        SwingUtilities.invokeLater(() -> {
+            var pane = new LoadingPane(this, jarFile);
+            showWindow(pane);
 
-        pane.startLoadingJarFile();
+            pane.startLoadingJarFile();
+        });
     }
 
+    /**
+     * Show the main search window
+     */
     public void showSearchWindow (String jarFilePath, List<MethodRecord> loadedMethods) {
-        var pane = new SearchPane(this, jarFilePath, loadedMethods);
-        showWindow(pane);
+        SwingUtilities.invokeLater(() -> {
+            var pane = new SearchPane(this, jarFilePath, loadedMethods);
+            showWindow(pane);
+        });
     }
 
 }
