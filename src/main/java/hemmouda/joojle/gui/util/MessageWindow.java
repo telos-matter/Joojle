@@ -17,4 +17,12 @@ public class MessageWindow {
                 JOptionPane.ERROR_MESSAGE);
     }
 
+    public static void showInfo (String message, String title) {
+        JOptionPane.showMessageDialog(
+                null,
+                message,
+                Window.WINDOW_TITLE_PREFIX + title,
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
 }
