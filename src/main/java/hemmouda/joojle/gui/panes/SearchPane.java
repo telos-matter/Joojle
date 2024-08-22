@@ -9,6 +9,7 @@ import hemmouda.joojle.api.core.methodinfo.MethodScope;
 import hemmouda.joojle.api.core.methodinfo.MethodKind;
 import hemmouda.joojle.api.core.methodinfo.MethodVisibility;
 import hemmouda.joojle.gui.util.FilterComboBox;
+import hemmouda.joojle.gui.util.MessageWindow;
 import hemmouda.joojle.gui.util.PlaceholderTextField;
 import hemmouda.joojle.gui.Window;
 import hemmouda.joojle.gui.WindowPane;
@@ -27,6 +28,8 @@ import java.util.Objects;
  * and see results
  */
 public class SearchPane extends WindowPane {
+
+    private static final int FONT_SIZE = 14;
 
     /**
      * The loaded methods on which the search
@@ -98,10 +101,15 @@ public class SearchPane extends WindowPane {
         // And ofc add the panel itself
         add(filterAndSearchPanel, BorderLayout.SOUTH);
 
-        // Where the results are going to be shown
-        resultList = new DefaultListModel<>();
-        // Create the JScrollPane in one go to avoid using so many variable names
-        add(new JScrollPane(new JList<>(resultList)), BorderLayout.CENTER);
+        // Init resultList where the results are populated
+        initResultList();
+        // And then create the scroll pane
+        add(createScrollPane(), BorderLayout.CENTER);
+
+        // Focus on searchField
+        SwingUtilities.invokeLater(() -> {
+            searchField.requestFocusInWindow();
+        });
     }
 
     private JButton createReturnButton () {
@@ -119,8 +127,8 @@ public class SearchPane extends WindowPane {
                 MethodKind.values(),
                 "Any kind",
                 Map.of(
-                        MethodKind.METHOD, Color.green,
-                        MethodKind.CONSTRUCTOR, Color.red
+                        MethodKind.METHOD, new Color(10, 10, 230),
+                        MethodKind.CONSTRUCTOR, new Color(255, 140, 0)
                 ),
                 this::searchAndFilter);
     }
@@ -142,8 +150,8 @@ public class SearchPane extends WindowPane {
                 MethodScope.values(),
                 "Any scope",
                 Map.of(
-                        MethodScope.INSTANCE, Color.green,
-                        MethodScope.STATIC, Color.red
+                        MethodScope.INSTANCE, new Color(0, 128, 128),
+                        MethodScope.STATIC, new Color(128, 0, 128)
                 ),
                 this::searchAndFilter);
     }
@@ -163,17 +171,16 @@ public class SearchPane extends WindowPane {
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
-
-            }
-
+            public void changedUpdate(DocumentEvent e) {}
 
             private void textChanged() {
                 searchAndFilter();
             }
         });
 
-        searchField.setPlaceholder("Search and filter from the loaded %d methods and constructors".formatted(loadedMethods.size()));
+        searchField.setPlaceholder("returnType (param1Type, param2Type <K,V>, ..)");
+        Font font = searchField.getFont();
+        searchField.setFont(new Font(font.getFontName(), font.getStyle(), FONT_SIZE));
         searchField.setMaximumSize(new Dimension(Integer.MAX_VALUE, searchField.getPreferredSize().height));
     }
 
@@ -181,14 +188,52 @@ public class SearchPane extends WindowPane {
         JButton button = new JButton(Icons.HELP_ICON);
 
         button.addActionListener(event -> {
-            String help = """
-                    Need some help? lol
-                    So do I.
-                    """;
-            JOptionPane.showMessageDialog(null, help, Window.WINDOW_TITLE_PREFIX + " - Help", JOptionPane.INFORMATION_MESSAGE);
+            final String helpMessage = """
+                    Start writing a query to show the best matching results
+                    from the loaded %d methods and constructors. You can
+                    also further filter the results according to kind,
+                    visibility, and scope.
+                    
+                    Queries describe the signature of the method you are
+                    looking for. Their structure is as follows:
+                    returnType (param1Type, param2Type, ..)
+                    You should only specify the simple name of a type, and
+                    not the fully qualified name. For example, if you are
+                    looking for a method that returns a String and takes
+                    an array of int, you would type:
+                    `String (int [])`, and not: `java.lang.String (int [])`.
+                    As for generic types, you would do them same as how you
+                    would in the method declaration, but of course without
+                    tha parameter name..
+                    Like so `List <T> (Map <? extends T, Integer>)` for example.
+                    Void return type is specified by `void` and constructors
+                    have a return type of the class they are instantiating.
+                    
+                    More information could be found on:
+                    https://github.com/telos-matter/Joojle
+                    """.formatted(loadedMethods.size());
+
+            MessageWindow.showInfo(helpMessage, " - Help");
         });
 
         return button;
+    }
+
+    private void initResultList() {
+        // Create
+        resultList = new DefaultListModel<>();
+        // Populate with what we already have
+        for (MethodRecord method : loadedMethods) {
+            resultList.addElement(method.toString());
+        }
+    }
+
+    private JScrollPane createScrollPane () {
+        JList <String> list = new JList<>(resultList);
+        Font font = list.getFont();
+        list.setFont(new Font(font.getFontName(), font.getStyle(), FONT_SIZE));
+
+        return new JScrollPane(list);
     }
 
     private void searchAndFilter () {
@@ -221,9 +266,9 @@ public class SearchPane extends WindowPane {
         if (currentFiltersHash != filtersHash) {
 
             // Get the filters
-            MethodKind type = getEnumValue((String) kindFilter.getSelectedItem(), MethodKind.values());
-            MethodVisibility visibility = getEnumValue((String) visibilityFilter.getSelectedItem(), MethodVisibility.values());
-            MethodScope scope = getEnumValue((String) scopeFilter.getSelectedItem(), MethodScope.values());
+            MethodKind type = kindFilter.getSelectedEnum();
+            MethodVisibility visibility = visibilityFilter.getSelectedEnum();
+            MethodScope scope = scopeFilter.getSelectedEnum();
 
             // Update
             filteredMethods = Filter.filter(loadedMethods, type, visibility, scope);
@@ -237,28 +282,10 @@ public class SearchPane extends WindowPane {
      */
     private int getFiltersHash () {
         return Objects.hash(
-                kindFilter.getSelectedItem(),
-                visibilityFilter.getSelectedItem(),
-                scopeFilter.getSelectedItem());
+                kindFilter.getSelectedEnum(),
+                visibilityFilter.getSelectedEnum(),
+                scopeFilter.getSelectedEnum());
     }
-
-    /**
-     * @return the appropriate enum value
-     * or <code>null</code> if none match
-     */
-    private static <T extends Enum<T>> T getEnumValue (String value, T [] enumValues) {
-        value = value.toUpperCase();
-
-        for (T enumValue : enumValues) {
-            if (enumValue.toString().toUpperCase().equals(value)) {
-                return enumValue;
-            }
-        }
-
-        return null;
-    }
-
-
 
     @Override
     public Dimension getPreferredWindowSize() {
