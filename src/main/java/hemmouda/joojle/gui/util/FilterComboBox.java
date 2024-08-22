@@ -42,17 +42,8 @@ public class FilterComboBox <T extends Enum<T>> extends JComboBox<String> {
         // Set default color
         setForeground(DEFAULT_VALUE_COLOR);
 
-        // Add action listener to change
-        // color depending on selection
-        // and to call onSelectionChange method
+        // Call onSelectionChange method
         addActionListener(event -> {
-            Color color = DEFAULT_VALUE_COLOR;
-            T selected = getSelectedEnum();
-            if (selected != null) {
-                color = valueColor.get(selected);
-            }
-            setForeground(color);
-
             onSelectionChange.run();
         });
 
@@ -64,8 +55,18 @@ public class FilterComboBox <T extends Enum<T>> extends JComboBox<String> {
                 setForeground(DEFAULT_VALUE_COLOR);
             }
 
+            // Change the color depending on what's
+            // selected
             @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                Color color = DEFAULT_VALUE_COLOR;
+                T selected = getSelectedEnum();
+                if (selected != null) {
+                    color = valueColor.get(selected);
+                }
+                setForeground(color);
+            }
+
             @Override
             public void popupMenuCanceled(PopupMenuEvent e) {}
         });
