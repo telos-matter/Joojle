@@ -54,6 +54,8 @@ public class SignatureForger {
         // Changing the case is no go, because there could be
         // a class called FooBar and another class called
         // Foobar. Two different things.
+        // Could also remove the parenthesis, but
+        // it's fast enough as it is.
         return query.replace(" ", "");
     }
 
