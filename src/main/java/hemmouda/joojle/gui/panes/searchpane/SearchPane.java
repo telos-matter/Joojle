@@ -10,6 +10,7 @@ import hemmouda.joojle.api.core.methodinfo.MethodKind;
 import hemmouda.joojle.api.core.methodinfo.MethodVisibility;
 import hemmouda.joojle.gui.panes.searchpane.util.Consts;
 import hemmouda.joojle.gui.panes.searchpane.util.FilterComboBox;
+import hemmouda.joojle.gui.panes.searchpane.util.ListCellRenderer;
 import hemmouda.joojle.gui.util.MessageWindow;
 import hemmouda.joojle.gui.util.PlaceholderTextField;
 import hemmouda.joojle.gui.Window;
@@ -52,7 +53,7 @@ public class SearchPane extends WindowPane {
      */
     private List<MethodRecord> filteredMethods;
 
-    private DefaultListModel <String> resultList;
+    private DefaultListModel <MethodRecord> resultList;
     private FilterComboBox <MethodKind> kindFilter;
     private FilterComboBox <MethodVisibility> visibilityFilter;
     private FilterComboBox <MethodScope> scopeFilter;
@@ -212,12 +213,13 @@ public class SearchPane extends WindowPane {
         resultList = new DefaultListModel<>();
         // Populate with what we already have
         for (MethodRecord method : loadedMethods) {
-            resultList.addElement(method.toString());
+            resultList.addElement(method);
         }
     }
 
     private JScrollPane createScrollPane () {
-        JList <String> list = new JList<>(resultList);
+        JList <MethodRecord> list = new JList<>(resultList);
+        list.setCellRenderer(new ListCellRenderer());
         Font font = list.getFont();
         list.setFont(new Font(font.getFontName(), font.getStyle(), Consts.FONT_SIZE));
 
@@ -240,7 +242,7 @@ public class SearchPane extends WindowPane {
             resultList.removeAllElements();
             // Display the results
             for (MethodScore result : results) {
-                resultList.addElement(result.method().toString());
+                resultList.addElement(result.method());
             }
         });
     }
