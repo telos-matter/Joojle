@@ -11,7 +11,7 @@ import java.util.Map;
  * Groups a bunch of constants that are used by
  * {@link hemmouda.joojle.gui.panes.searchpane.SearchPane}
  */
-public class Consts {
+public class Const {
 
     public static final int FONT_SIZE = 14;
 

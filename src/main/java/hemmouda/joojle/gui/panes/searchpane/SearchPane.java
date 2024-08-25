@@ -8,7 +8,7 @@ import hemmouda.joojle.api.core.MethodScore;
 import hemmouda.joojle.api.core.methodinfo.MethodScope;
 import hemmouda.joojle.api.core.methodinfo.MethodKind;
 import hemmouda.joojle.api.core.methodinfo.MethodVisibility;
-import hemmouda.joojle.gui.panes.searchpane.util.Consts;
+import hemmouda.joojle.gui.panes.searchpane.util.Const;
 import hemmouda.joojle.gui.panes.searchpane.util.FilterComboBox;
 import hemmouda.joojle.gui.panes.searchpane.util.ListCellRenderer;
 import hemmouda.joojle.gui.util.MessageWindow;
@@ -125,7 +125,7 @@ public class SearchPane extends WindowPane {
         kindFilter = new FilterComboBox<>(
                 MethodKind.values(),
                 "Any kind",
-                Consts.METHOD_KIND_COLOR,
+                Const.METHOD_KIND_COLOR,
                 this::searchAndFilter);
     }
 
@@ -133,7 +133,7 @@ public class SearchPane extends WindowPane {
         visibilityFilter = new FilterComboBox<>(
                 MethodVisibility.values(),
                 "Any visibility",
-                Consts.METHOD_VISIBILITY_COLOR,
+                Const.METHOD_VISIBILITY_COLOR,
                 this::searchAndFilter);
     }
 
@@ -141,7 +141,7 @@ public class SearchPane extends WindowPane {
         scopeFilter = new FilterComboBox<>(
                 MethodScope.values(),
                 "Any scope",
-                Consts.METHOD_SCOPE_COLOR,
+                Const.METHOD_SCOPE_COLOR,
                 this::searchAndFilter);
     }
 
@@ -169,7 +169,7 @@ public class SearchPane extends WindowPane {
 
         searchField.setPlaceholder("returnType (param1Type, param2Type <K,V>, ..)");
         Font font = searchField.getFont();
-        searchField.setFont(new Font(font.getFontName(), font.getStyle(), Consts.FONT_SIZE));
+        searchField.setFont(new Font(font.getFontName(), font.getStyle(), Const.FONT_SIZE));
         searchField.setMaximumSize(new Dimension(Integer.MAX_VALUE, searchField.getPreferredSize().height));
     }
 
@@ -221,7 +221,7 @@ public class SearchPane extends WindowPane {
         JList <MethodRecord> list = new JList<>(resultList);
         list.setCellRenderer(new ListCellRenderer());
         Font font = list.getFont();
-        list.setFont(new Font(font.getFontName(), font.getStyle(), Consts.FONT_SIZE));
+        list.setFont(new Font(font.getFontName(), font.getStyle(), Const.FONT_SIZE));
 
         return new JScrollPane(list);
     }
