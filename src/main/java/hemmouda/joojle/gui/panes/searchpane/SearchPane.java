@@ -8,6 +8,7 @@ import hemmouda.joojle.api.core.MethodScore;
 import hemmouda.joojle.api.core.methodinfo.MethodScope;
 import hemmouda.joojle.api.core.methodinfo.MethodKind;
 import hemmouda.joojle.api.core.methodinfo.MethodVisibility;
+import hemmouda.joojle.gui.panes.searchpane.util.Consts;
 import hemmouda.joojle.gui.panes.searchpane.util.FilterComboBox;
 import hemmouda.joojle.gui.util.MessageWindow;
 import hemmouda.joojle.gui.util.PlaceholderTextField;
@@ -20,7 +21,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -28,8 +28,6 @@ import java.util.Objects;
  * and see results
  */
 public class SearchPane extends WindowPane {
-
-    private static final int FONT_SIZE = 14;
 
     /**
      * The loaded methods on which the search
@@ -126,10 +124,7 @@ public class SearchPane extends WindowPane {
         kindFilter = new FilterComboBox<>(
                 MethodKind.values(),
                 "Any kind",
-                Map.of(
-                        MethodKind.METHOD, new Color(10, 10, 230),
-                        MethodKind.CONSTRUCTOR, new Color(255, 140, 0)
-                ),
+                Consts.METHOD_KIND_COLOR,
                 this::searchAndFilter);
     }
 
@@ -137,11 +132,7 @@ public class SearchPane extends WindowPane {
         visibilityFilter = new FilterComboBox<>(
                 MethodVisibility.values(),
                 "Any visibility",
-                Map.of(
-                        MethodVisibility.PUBLIC, Color.green,
-                        MethodVisibility.PRIVATE, Color.red,
-                        MethodVisibility.PROTECTED, Color.orange
-                ),
+                Consts.METHOD_VISIBILITY_COLOR,
                 this::searchAndFilter);
     }
 
@@ -149,10 +140,7 @@ public class SearchPane extends WindowPane {
         scopeFilter = new FilterComboBox<>(
                 MethodScope.values(),
                 "Any scope",
-                Map.of(
-                        MethodScope.INSTANCE, new Color(0, 128, 128),
-                        MethodScope.STATIC, new Color(128, 0, 128)
-                ),
+                Consts.METHOD_SCOPE_COLOR,
                 this::searchAndFilter);
     }
 
@@ -180,7 +168,7 @@ public class SearchPane extends WindowPane {
 
         searchField.setPlaceholder("returnType (param1Type, param2Type <K,V>, ..)");
         Font font = searchField.getFont();
-        searchField.setFont(new Font(font.getFontName(), font.getStyle(), FONT_SIZE));
+        searchField.setFont(new Font(font.getFontName(), font.getStyle(), Consts.FONT_SIZE));
         searchField.setMaximumSize(new Dimension(Integer.MAX_VALUE, searchField.getPreferredSize().height));
     }
 
@@ -231,7 +219,7 @@ public class SearchPane extends WindowPane {
     private JScrollPane createScrollPane () {
         JList <String> list = new JList<>(resultList);
         Font font = list.getFont();
-        list.setFont(new Font(font.getFontName(), font.getStyle(), FONT_SIZE));
+        list.setFont(new Font(font.getFontName(), font.getStyle(), Consts.FONT_SIZE));
 
         return new JScrollPane(list);
     }
