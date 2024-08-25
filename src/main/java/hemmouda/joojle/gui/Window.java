@@ -2,7 +2,7 @@ package hemmouda.joojle.gui;
 
 import hemmouda.joojle.api.core.MethodRecord;
 import hemmouda.joojle.gui.panes.LoadingPane;
-import hemmouda.joojle.gui.panes.SearchPane;
+import hemmouda.joojle.gui.panes.searchpane.SearchPane;
 import hemmouda.joojle.gui.panes.SelectionPane;
 
 import javax.swing.*;

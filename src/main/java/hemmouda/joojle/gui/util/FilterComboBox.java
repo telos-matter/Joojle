@@ -1,5 +1,7 @@
 package hemmouda.joojle.gui.util;
 
+import hemmouda.joojle.gui.panes.searchpane.SearchPane;
+
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -8,7 +10,7 @@ import java.util.Map;
 
 /**
  * A JComboBox that is used specifically
- * for the filters in the {@link hemmouda.joojle.gui.panes.SearchPane}
+ * for the filters in the {@link SearchPane}
  */
 public class FilterComboBox <T extends Enum<T>> extends JComboBox<String> {
 

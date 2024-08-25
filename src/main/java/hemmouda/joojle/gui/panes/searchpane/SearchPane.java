@@ -1,4 +1,4 @@
-package hemmouda.joojle.gui.panes;
+package hemmouda.joojle.gui.panes.searchpane;
 
 import hemmouda.joojle.api.Filter;
 import hemmouda.joojle.api.Ranker;
