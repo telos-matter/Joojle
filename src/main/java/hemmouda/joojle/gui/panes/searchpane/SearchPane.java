@@ -8,7 +8,7 @@ import hemmouda.joojle.api.core.MethodScore;
 import hemmouda.joojle.api.core.methodinfo.MethodScope;
 import hemmouda.joojle.api.core.methodinfo.MethodKind;
 import hemmouda.joojle.api.core.methodinfo.MethodVisibility;
-import hemmouda.joojle.gui.util.FilterComboBox;
+import hemmouda.joojle.gui.panes.searchpane.util.FilterComboBox;
 import hemmouda.joojle.gui.util.MessageWindow;
 import hemmouda.joojle.gui.util.PlaceholderTextField;
 import hemmouda.joojle.gui.Window;

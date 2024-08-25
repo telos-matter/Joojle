@@ -1,4 +1,4 @@
-package hemmouda.joojle.gui.util;
+package hemmouda.joojle.gui.panes.searchpane.util;
 
 import hemmouda.joojle.gui.panes.searchpane.SearchPane;
 
