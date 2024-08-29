@@ -1,8 +1,7 @@
 package hemmouda.joojle.gui.panes.searchpane;
 
 import hemmouda.joojle.api.Filter;
-import hemmouda.joojle.api.Ranker;
-import hemmouda.joojle.api.SignatureForger;
+import hemmouda.joojle.api.QueryHandler;
 import hemmouda.joojle.api.core.MethodRecord;
 import hemmouda.joojle.api.core.MethodScore;
 import hemmouda.joojle.api.core.methodinfo.MethodScope;
@@ -267,16 +266,14 @@ public class SearchPane extends WindowPane {
         searchTimer = null;
 
         SwingUtilities.invokeLater(() -> {
-            // TODO add the search by name thing
-            // Get the query and simplify it
+            // Get the query
             String query = searchField.getText();
-            query = SignatureForger.simplifyQuery(query);
 
             // Update the filtered methods
             updateFilteredMethods();
 
             // Get the ranked results
-            var results = Ranker.rank(query, filteredMethods);
+            var results = QueryHandler.handle(query, filteredMethods);
 
             // Clear what is displayed
             resultList.removeAllElements();
