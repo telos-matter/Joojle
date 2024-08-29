@@ -9,15 +9,14 @@ public class Ranker {
 
 	/**
 	 * Performs a fuzzy search using levenshtein distance on the
-	 * query (that is assumed to have already been treated)
-	 * and the signatures of the {@link MethodRecord}s
-	 * 
+	 * name (that is assumed to have already been treated)
+	 * and the names of the {@link MethodRecord}s
+	 *
 	 * @return a new ordered list of {@link MethodScore}
 	 */
-	public static List<MethodScore> rank (String query, List<MethodRecord> methods) {
-
+	public static List<MethodScore> rankNames(String name, List<MethodRecord> methods) {
 		return methods.stream()
-				.map(method -> getMethodScore(query, method))
+				.map(method -> getMethodNameScore(name, method))
 				.sorted()
 				.toList();
 	}
@@ -25,10 +24,35 @@ public class Ranker {
 	/**
 	 * @return the score
 	 * of the given method with respect
-	 * to the given query.
+	 * to the given name.
 	 */
-	private static MethodScore getMethodScore (String query, MethodRecord method) {
-		var score = lev(query, method.getSignature());
+	private static MethodScore getMethodNameScore(String name, MethodRecord method) {
+		var score = lev(name, method.getName());
+		return new MethodScore(method, score);
+	}
+
+	/**
+	 * Performs a fuzzy search using levenshtein distance on the
+	 * signature (that is assumed to have already been treated)
+	 * and the signatures of the {@link MethodRecord}s
+	 * 
+	 * @return a new ordered list of {@link MethodScore}
+	 */
+	public static List<MethodScore> rankSignatures(String signature, List<MethodRecord> methods) {
+
+		return methods.stream()
+				.map(method -> getMethodSignatureScore(signature, method))
+				.sorted()
+				.toList();
+	}
+
+	/**
+	 * @return the score
+	 * of the given method with respect
+	 * to the given signature.
+	 */
+	private static MethodScore getMethodSignatureScore(String signature, MethodRecord method) {
+		var score = lev(signature, method.getSignature());
 		return new MethodScore(method, score);
 	}
 	
