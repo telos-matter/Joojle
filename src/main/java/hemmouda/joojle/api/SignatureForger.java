@@ -7,12 +7,13 @@ import java.util.List;
 
 /**
  * A utility class that generates
- * the signatures of the methods
- * and treats the user queries.
+ * the signatures of the methods.
  */
 public class SignatureForger {
 
-    // Needed later on
+    /**
+     * Needed later on
+     */
     private static final List<String> BOUNDED_WILDCARDS = List.of(" extends ", " super ");
 
     /**
@@ -40,23 +41,7 @@ public class SignatureForger {
         // returnType(param1Type,param2Type,...)
         signature.append(')');
 
-        return simplifyQuery(signature.toString());
-    }
-
-    /**
-     * Simplifies a query or a signature
-     * of a method by removing unnecessary stuff.
-     * Useful in order to make the fuzzy search go
-     * a little more zoom zoom.
-     */
-    public static String simplifyQuery (String query) {
-        // So far, all I can think about is removing white space
-        // Changing the case is no go, because there could be
-        // a class called FooBar and another class called
-        // Foobar. Two different things.
-        // Could also remove the parenthesis, but
-        // it's fast enough as it is.
-        return query.replace(" ", "");
+        return signature.toString();
     }
 
     /**
