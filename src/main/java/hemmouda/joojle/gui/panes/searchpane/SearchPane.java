@@ -30,6 +30,8 @@ import java.util.Objects;
  */
 public class SearchPane extends WindowPane {
 
+    private static final int SEARCH_COOLDOWN_MS = 500;
+
     /**
      * The loaded methods on which the search
      * and filtering will be preformed
@@ -54,10 +56,21 @@ public class SearchPane extends WindowPane {
     private List<MethodRecord> filteredMethods;
 
     private DefaultListModel <MethodRecord> resultList;
+    private ListCellRenderer listCellRenderer;
     private FilterComboBox <MethodKind> kindFilter;
     private FilterComboBox <MethodVisibility> visibilityFilter;
     private FilterComboBox <MethodScope> scopeFilter;
     private PlaceholderTextField searchField;
+
+    /**
+     * When was the last search performed?
+     */
+    private long lastSearch;
+    /**
+     * A timer that goes off when
+     * the search cooldown elapses.
+     */
+    private Timer searchTimer;
 
 
     public SearchPane(Window parent, String jarFilePath, List <MethodRecord> loadedMethods) {
@@ -68,6 +81,8 @@ public class SearchPane extends WindowPane {
 
         this.filtersHash = -1;
         this.filteredMethods = null;
+
+        this.lastSearch = -1;
 
         init();
     }
@@ -94,10 +109,7 @@ public class SearchPane extends WindowPane {
         initSearchField();
         filterAndSearchPanel.add(searchField);
 
-        // Then finally, the help button
-        filterAndSearchPanel.add(createHelpButton());
-
-        // And ofc add the panel itself
+        // Add the panel itself
         add(filterAndSearchPanel, BorderLayout.SOUTH);
 
         // Init resultList where the results are populated
@@ -113,11 +125,9 @@ public class SearchPane extends WindowPane {
 
     private JButton createReturnButton () {
         JButton button = new JButton(Icons.RETURN_ICON);
-
         button.addActionListener(event -> {
             parent.showSelectionWindow();
         });
-
         return button;
     }
 
@@ -163,53 +173,44 @@ public class SearchPane extends WindowPane {
             public void changedUpdate(DocumentEvent e) {}
 
             private void textChanged() {
-                searchAndFilter();
+                SwingUtilities.invokeLater(() -> {
+                    String text = searchField.getText();
+                    // If asking for help
+                    if (text.equals(Const.HELP_CMD)) {
+                        // Clean searchField then show it
+                        searchField.setText("");
+                        showHelp();
+                    // Or if asking to switch colors
+                    } else if (text.equals(Const.FLIP_COLOR_CMD)) {
+                        // Clean searchField and flip
+                        searchField.setText("");
+                        flipColor();
+                    // Otherwise call for searchAndFilter
+                    } else {
+                        searchAndFilter();
+                    }
+                });
             }
         });
 
-        searchField.setPlaceholder("returnType (param1Type, param2Type <K,V>, ..)");
+        String placeholder = "Search within the loaded %d methods. Or type `%s` for help".formatted(loadedMethods.size(), Const.HELP_CMD);
+        searchField.setPlaceholder(placeholder);
         Font font = searchField.getFont();
         searchField.setFont(new Font(font.getFontName(), font.getStyle(), Const.FONT_SIZE));
         searchField.setMaximumSize(new Dimension(Integer.MAX_VALUE, searchField.getPreferredSize().height));
     }
 
-    private JButton createHelpButton () {
-        JButton button = new JButton(Icons.HELP_ICON);
+    private void showHelp () {
+        MessageWindow.showLargeInfo(Const.HTML_HELP_MESSAGE, " - Help");
+    }
 
-        button.addActionListener(event -> {
-            final String helpMessage = """
-                    Start writing a query to show the best matching results
-                    from the loaded %d methods and constructors. You can
-                    also further filter the results according to kind,
-                    visibility, and scope.
-                    
-                    Queries describe the signature of the method you are
-                    looking for. Their structure is as follows:
-                    returnType (param1Type, param2Type, ..)
-                    You should only specify the simple name of a type, and
-                    not the fully qualified name. For example, if you are
-                    looking for a method that returns a String and takes
-                    an array of int, you would type:
-                    `String (int [])`, and not: `java.lang.String (int [])`.
-                    As for generic types, you would do them same as how you
-                    would in the method declaration, but of course without
-                    tha parameter name..
-                    Like so `List <T> (Map <? extends T, Integer>)` for example.
-                    Void return type is specified by `void` and constructors
-                    have a return type of the class they are instantiating.
-                    
-                    More information could be found on:
-                    https://github.com/telos-matter/Joojle
-                    """.formatted(loadedMethods.size());
-
-            MessageWindow.showInfo(helpMessage, " - Help");
-        });
-
-        return button;
+    private void flipColor () {
+        listCellRenderer.flipColorful();
+        revalidate();
+        repaint();
     }
 
     private void initResultList() {
-        // Create
         resultList = new DefaultListModel<>();
         // Populate with what we already have
         for (MethodRecord method : loadedMethods) {
@@ -218,16 +219,55 @@ public class SearchPane extends WindowPane {
     }
 
     private JScrollPane createScrollPane () {
+        listCellRenderer = new ListCellRenderer();
+
         JList <MethodRecord> list = new JList<>(resultList);
-        list.setCellRenderer(new ListCellRenderer());
+        list.setCellRenderer(listCellRenderer);
         Font font = list.getFont();
         list.setFont(new Font(font.getFontName(), font.getStyle(), Const.FONT_SIZE));
 
         return new JScrollPane(list);
     }
 
+    /**
+     * Searches and filters once the cooldown
+     * has elapsed.
+     */
     private void searchAndFilter () {
+        // If searchTimer is set then do nothing.
+        // A search is scheduled to go off
+        if (searchTimer != null) {
+            return;
+        }
+
+        // If not, check if cooldown has elapsed
+        long elapsed = System.currentTimeMillis() - lastSearch;
+        if (elapsed > SEARCH_COOLDOWN_MS) {
+            // If it has elapsed, then search directly
+            searchAndFilter0();
+        } else {
+            // If not, set a timer to go off after
+            // the cooldown
+            int remainder = (int)(SEARCH_COOLDOWN_MS - elapsed);
+            searchTimer = new Timer(remainder, (event) -> {
+                searchAndFilter0();
+            });
+            searchTimer.setRepeats(false);
+            searchTimer.start();
+        }
+    }
+
+    /**
+     * What actually does the search
+     * and filtering
+     */
+    private void searchAndFilter0 () {
+        // Reset last and searchTimer
+        lastSearch = System.currentTimeMillis();
+        searchTimer = null;
+
         SwingUtilities.invokeLater(() -> {
+            // TODO add the search by name thing
             // Get the query and simplify it
             String query = searchField.getText();
             query = SignatureForger.simplifyQuery(query);
