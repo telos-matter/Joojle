@@ -16,12 +16,6 @@ public class Window extends JFrame {
     public Window () {
         super();
 
-        // Set the look and feel to System if possible
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ignored) {}
-
-        // Default setup
         setResizable(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
