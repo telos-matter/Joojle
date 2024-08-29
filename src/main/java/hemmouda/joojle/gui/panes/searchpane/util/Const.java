@@ -1,5 +1,6 @@
 package hemmouda.joojle.gui.panes.searchpane.util;
 
+import hemmouda.joojle.api.QueryHandler;
 import hemmouda.joojle.api.core.methodinfo.MethodKind;
 import hemmouda.joojle.api.core.methodinfo.MethodScope;
 import hemmouda.joojle.api.core.methodinfo.MethodVisibility;
@@ -37,14 +38,14 @@ public class Const {
 
     public static final String HTML_HELP_MESSAGE = """
             <html>
-            <p style="font-size:%dpx;">
+            <p style="font-size:{FONT_SIZE}px;">
             <b>Joojle</b> is a utility application that allows you to search and
             look for a specific method, or constructor, within a JAR file,
             using the method signature or its potential name.
             <br>
             <br>
             Within the search field, type the method signature, followed by
-            a colon "<code style="font-size:%dpx;">:</code>", followed by what you think the method name may be.
+            a colon "<code style='font-size:{FONT_SIZE}px;'>{SIG_NAME_SEP}</code>", followed by what you think the method name may be.
             <br>
             You can also only give the signature, or only the name by
             prefixing it with a colon. The signature or the name need not be exact
@@ -54,37 +55,37 @@ public class Const {
             The query for the method signature resembles that of the method
             definition:
             <br>
-            <code style="font-size:%dpx;">returnType (param1Type, param2Type <K,V>, ..)</code>
+            <code style="font-size:{FONT_SIZE}px;">returnType (param1Type, param2Type <K,V>, ..)</code>
             where you only need to specify the simple name of the type. And
             if it takes a generic type, then you describe it same as how you would
             when defining it.
             <br>
             Here are a couple of examples:
             </p>
-            <ul style="font-size:%dpx;">
+            <ul style="font-size:{FONT_SIZE}px;">
             <li>
             You are looking for a method that returns nothing and takes an array
             of ints. And you suspect it may be called processArray. The query
             could look like:
-            <br><code style="font-size:%dpx;">void (int []) : processArray</code>
+            <br><code style="font-size:{FONT_SIZE}px;">void (int []) {SIG_NAME_SEP} processArray</code>
             </li>
             <br>
             <li>
-            You are looking for a method that returns a List of type <code style="font-size:%dpx;">T</code>
+            You are looking for a method that returns a List of type <code style="font-size:{FONT_SIZE}px;">T</code>
             and takes a Map that maps that type to an Integer. And you have no
             idea what it may be called. The query could look like this:
             <br>
-            <code style="font-size:%dpx;">List &lt;T&gt; (Map &lt;? extends T, Integer&gt;)</code>
+            <code style="font-size:{FONT_SIZE}px;">List &lt;T&gt; (Map &lt;? extends T, Integer&gt;)</code>
             </li>
             <br>
             <li>
             You are looking for a method that you suspect could be named
-            <code style="font-size:%dpx;">getFoo</code>. The query could look like this:
+            <code style="font-size:{FONT_SIZE}px;">getFoo</code>. The query could look like this:
             <br>
-            <code style="font-size:%dpx;">: getFoo</code>
+            <code style="font-size:{FONT_SIZE}px;">{SIG_NAME_SEP} getFoo</code>
             </li>
             </ul>
-            <p style="font-size:%dpx;">
+            <p style="font-size:{FONT_SIZE}px;">
             If you'd want more examples about the query structure, then you can hold
             the mouse still on a method to see the tooltip that shows
             the query that best describes that method.
@@ -97,12 +98,14 @@ public class Const {
             <br>
             <br>
             If the application is a bit sluggish, then you can turn off
-            the color formatting by typing <code style="font-size:%dpx;">%s</code>.
+            the color formatting by typing <code style="font-size:{FONT_SIZE}px;">{FLIP_COLOR_CMD}</code>.
             <br>
             <br>
             More information could be found in the
             Github repo: https://github.com/telos-matter/Joojle
             </p>
             </html>
-            """.replace("%d", String.valueOf(FONT_SIZE)).formatted(FLIP_COLOR_CMD);
+            """.replace("{FONT_SIZE}", String.valueOf(FONT_SIZE))
+            .replace("{SIG_NAME_SEP}", QueryHandler.SIGNATURE_NAME_SEP)
+            .replace("{FLIP_COLOR_CMD}", FLIP_COLOR_CMD);
 }
