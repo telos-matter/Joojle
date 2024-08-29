@@ -50,10 +50,10 @@ public class Const {
             <br>
             <br>
             Within the search field, type the method signature, followed by
-            a colon "<code style='font-size:{FONT_SIZE}px;'>{SIG_NAME_SEP}</code>", followed by what you think the method name may be.
+            a pipe "<code style='font-size:{FONT_SIZE}px;'>{SIG_NAME_SEP}</code>", followed by what you think the method name may be.
             <br>
             You can also only give the signature, or only the name by
-            prefixing it with a colon. The signature or the name need not be exact
+            prefixing it with a pipe. The signature or the name need not be exact
             because a fuzzy search is performed.
             <br>
             <br>

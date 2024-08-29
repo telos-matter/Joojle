@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class QueryHandler {
 
-    public static final String SIGNATURE_NAME_SEP = ":";
+    public static final String SIGNATURE_NAME_SEP = "|";
 
     /**
      * Process a query for the given
