@@ -19,6 +19,11 @@ public class Const {
 
     public static final int FONT_SIZE = 14;
 
+    /**
+     * Parenthesis, commas, ext..
+     */
+    public static final Color REST_COLOR = new Color(255, 86, 86);
+
     public static final Map<MethodKind, Color> METHOD_KIND_COLOR = Map.of(
             MethodKind.METHOD, new Color(10, 10, 230),
             MethodKind.CONSTRUCTOR, new Color(255, 140, 0)
@@ -93,12 +98,15 @@ public class Const {
             The return type of constructors is the type they are instantiating.
             <br>
             <br>
+            The shown results tell you exactly where that method is located.
+            <br>
+            <br>
             You can also further filter the results according to kind,
             visibility, and scope.
             <br>
             <br>
             If the application is a bit sluggish, then you can turn off
-            the color formatting by typing <code style="font-size:{FONT_SIZE}px;">{FLIP_COLOR_CMD}</code>.
+            the colorful formatting by typing <code style="font-size:{FONT_SIZE}px;">{FLIP_COLOR_CMD}</code>.
             <br>
             <br>
             More information could be found in the
