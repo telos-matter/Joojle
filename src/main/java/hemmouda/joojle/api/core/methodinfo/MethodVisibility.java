@@ -10,11 +10,11 @@ public enum MethodVisibility {
 
     PUBLIC,
     PRIVATE,
-    PROTECTED;
+    PROTECTED,
+    DEFAULT;
 
     /**
      * @return the given executable visibility.
-     * Or <code>null</code> if none match.
      */
     public static MethodVisibility getVisibility (Executable executable) {
         var mod = executable.getModifiers();
@@ -26,7 +26,8 @@ public enum MethodVisibility {
         } else if (Modifier.isProtected(mod)) {
             return PROTECTED;
         } else {
-            return null;
+            // If none of the above then it's default
+            return DEFAULT;
         }
     }
 
