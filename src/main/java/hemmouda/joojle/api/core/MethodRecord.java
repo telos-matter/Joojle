@@ -1,5 +1,6 @@
 package hemmouda.joojle.api.core;
 
+import hemmouda.joojle.api.QueryHandler;
 import hemmouda.joojle.api.SignatureForger;
 import hemmouda.joojle.api.core.methodinfo.MethodScope;
 import hemmouda.joojle.api.core.methodinfo.MethodKind;
@@ -37,11 +38,20 @@ public class MethodRecord {
 	private final MethodScope scope;
 
 	/**
+	 * Name of this method
+	 */
+	private final String name;
+	/**
 	 * This methods' signature. What
 	 * the user's query will be tested
 	 * against.
 	 */
 	private final String signature;
+	/**
+	 * The query that perfectly matches
+	 * this method
+	 */
+	private final String perfectQuery;
 
 	public MethodRecord(Executable executable, boolean isConstructor) {
 		this.executable = executable;
@@ -50,7 +60,12 @@ public class MethodRecord {
 		this.visibility = MethodVisibility.getVisibility(executable);
 		this.scope = MethodScope.getScope(executable);
 
-		this.signature = SignatureForger.forgeSignature(executable);
+		this.name = executable.getName();
+		this.signature = QueryHandler.simplifySignature(SignatureForger.forgeSignature(executable));
+		this.perfectQuery = "%s %s %s".formatted(
+				signature,
+				QueryHandler.SIGNATURE_NAME_SEP,
+				name);
 	}
 
 	public Executable getExecutable () {
@@ -73,13 +88,16 @@ public class MethodRecord {
 		return signature;
 	}
 
-	/**
-	 * @return the representation
-	 * to show the user.
-	 */
+	public String getName () {
+		return name;
+	}
+
+	public String getPerfectQuery () {
+		return perfectQuery;
+	}
+
 	@Override
-	public String toString() {
-		return executable.toString();
-//		return signature + " -> " + executable.toString() +" -> " + executable.getName(); // to test
+	public int hashCode () {
+		return signature.hashCode();
 	}
 }
