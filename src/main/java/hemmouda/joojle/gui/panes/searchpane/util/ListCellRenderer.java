@@ -7,7 +7,6 @@ import hemmouda.joojle.api.core.methodinfo.MethodVisibility;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -74,7 +73,7 @@ public class ListCellRenderer extends DefaultListCellRenderer {
     }
 
     private String formatReturnType (MethodRecord method) {
-        return method.getReturnTypeString();
+        return formatType(method.getReturnTypeString());
     }
 
     private String formatName(MethodRecord method) {
@@ -105,11 +104,37 @@ public class ListCellRenderer extends DefaultListCellRenderer {
             // Can't substitute because span contains the delimiters
             final Color color = Const.REST_COLOR;
             return method.getParamsString().stream()
+                    .map(this::formatType)
                     .collect(Collectors.joining(
                             wrapInColoredSpan(", ", color),
                             wrapInColoredSpan("(", color),
                             wrapInColoredSpan(")", color)));
         }
+    }
+
+    /**
+     * Formats parameters and return types
+     */
+    private String formatType (String type) {
+        // If not colorful, then return it as is
+        if (!colorful) {
+            return type;
+        }
+
+        // If we are being zesty, then color
+        // the `,`, `<`, and `>`. And switch
+        // the `<` and `>` to HTML signs.
+
+        // First swap the `<` and `>`.
+        type = type.replace("<", "&lt;")
+                .replace(">", "&gt;");
+
+        // Now color `,` first, then the rest.
+        type = type.replace(",", wrapInColoredSpan(",", Const.REST_COLOR))
+                .replace("&lt;", wrapInColoredSpan("&lt;", Const.REST_COLOR))
+                .replace("&gt;", wrapInColoredSpan("&gt;", Const.REST_COLOR));
+
+        return type;
     }
 
     /**
