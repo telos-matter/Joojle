@@ -206,7 +206,7 @@ public class SignatureForger {
                 case ',':
                     if (depth == 0) {
                         // Remove the added `,`
-                        String genericType = buffer.substring(0, buffer.length());
+                        String genericType = buffer.substring(0, buffer.length() -1);
                         list.add(genericType);
                         // Clear the buffer
                         buffer.setLength(0);
