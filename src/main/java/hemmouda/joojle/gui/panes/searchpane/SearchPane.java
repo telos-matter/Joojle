@@ -20,7 +20,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.lang.reflect.Executable;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +32,11 @@ public class SearchPane extends WindowPane {
     private static final String NO_FILTER_PLACEHOLDER = "Search through the %d loaded methods";
     private static final String FILTER_APPLIED_PLACEHOLDER = "Search among the %d filtered results";
 
-    private static final int SEARCH_COOLDOWN_MS = 0;
+    /**
+     * An estimate of how much time needs to elapse
+     * to say that the user stopped typing.
+     */
+    private static final int TYPING_ENDED_MS = 275;
 
     /**
      * The loaded methods on which the search
@@ -66,12 +69,8 @@ public class SearchPane extends WindowPane {
     private PlaceholderTextField searchField;
 
     /**
-     * When was the last search performed?
-     */
-    private long lastSearch;
-    /**
      * A timer that goes off when
-     * the search cooldown elapses.
+     * the user stops typing.
      */
     private Timer searchTimer;
 
@@ -84,8 +83,6 @@ public class SearchPane extends WindowPane {
 
         this.filtersHash = -1;
         this.filteredMethods = null;
-
-        this.lastSearch = -1;
 
         init();
     }
@@ -234,26 +231,18 @@ public class SearchPane extends WindowPane {
     }
 
     /**
-     * Searches and filters once the cooldown
-     * has elapsed.
+     * Searches and filters once the user
+     * stops typing
      */
     private void searchAndFilter () {
-        // If searchTimer is set then do nothing.
-        // A search is scheduled to go off
+        // If searchTimer is set then reset it
+        // because the user typed
         if (searchTimer != null) {
-            return;
-        }
+            searchTimer.restart();
 
-        // If not, check if cooldown has elapsed
-        long elapsed = System.currentTimeMillis() - lastSearch;
-        if (elapsed > SEARCH_COOLDOWN_MS) {
-            // If it has elapsed, then search directly
-            searchAndFilter0();
+        // If not, set it to go off
         } else {
-            // If not, set a timer to go off after
-            // the cooldown
-            int remainder = (int)(SEARCH_COOLDOWN_MS - elapsed);
-            searchTimer = new Timer(remainder, (event) -> {
+            searchTimer = new Timer(TYPING_ENDED_MS, (event) -> {
                 searchAndFilter0();
             });
             searchTimer.setRepeats(false);
@@ -266,8 +255,8 @@ public class SearchPane extends WindowPane {
      * and filtering
      */
     private void searchAndFilter0 () {
-        // Reset last and searchTimer
-        lastSearch = System.currentTimeMillis();
+        // Delete searchTimer
+        searchTimer.stop();
         searchTimer = null;
 
         SwingUtilities.invokeLater(() -> {
