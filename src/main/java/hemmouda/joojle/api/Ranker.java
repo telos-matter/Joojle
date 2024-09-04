@@ -55,7 +55,13 @@ public class Ranker {
 		var score = lev(signature, method.getSignature());
 		return new MethodScore(method, score);
 	}
-	
+
+	// TODO a better ranking method that takes into consideration
+	// that if I type `12345` that I'm probably looking for
+	// `123456789` and not `abc`. I guess a lev distance with higher
+	// cost for substitution and deletion would do. But until
+	// you look into it.
+
 	/**
 	 * Returns the levenshtein distance between the two strings.
 	 */
