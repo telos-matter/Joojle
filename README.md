@@ -1,7 +1,7 @@
 # Joojle &nbsp; ![DEVELOPMENT STATUS: version 0.2](https://badgen.net/badge/DEVELOPMENT%20STATUS/version%200.2/green)
 
 A knockoff version of [Hoogle](https://hoogle.haskell.org/) but for Java.
-<br>
+<br><br>
 **Heavily** inspired by <a href="https://www.twitch.tv/tsoding">Tsoding</a>, more
 specifically from these <a href="https://youtube.com/playlist?list=PLpM-Dvs8t0VYhYLxY-i7OcvBbDsG4izam&si=aBJkIpS3pjflStvS">streams</a>. With a couple of added features like filtering by method kind, visibility, or scope.
 
