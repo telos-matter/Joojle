@@ -20,6 +20,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.lang.reflect.Executable;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +30,10 @@ import java.util.Objects;
  */
 public class SearchPane extends WindowPane {
 
-    private static final int SEARCH_COOLDOWN_MS = 500;
+    private static final String NO_FILTER_PLACEHOLDER = "Search through the %d loaded methods";
+    private static final String FILTER_APPLIED_PLACEHOLDER = "Search among the %d filtered results";
+
+    private static final int SEARCH_COOLDOWN_MS = 0;
 
     /**
      * The loaded methods on which the search
@@ -192,7 +196,7 @@ public class SearchPane extends WindowPane {
             }
         });
 
-        String placeholder = "Search within the loaded %d methods. Or type `%s` for help".formatted(loadedMethods.size(), Const.HELP_CMD);
+        String placeholder = "Type `%s` for help".formatted(Const.HELP_CMD);
         searchField.setPlaceholder(placeholder);
         Font font = searchField.getFont();
         searchField.setFont(new Font(font.getFontName(), font.getStyle(), Const.FONT_SIZE));
@@ -205,7 +209,8 @@ public class SearchPane extends WindowPane {
 
     private void flipColor () {
         listCellRenderer.flipColorful();
-        revalidate();
+        // Only need to repaint the JList or ScrollPane
+        // but that means keeping a reference to it. So eh.
         repaint();
     }
 
@@ -300,6 +305,18 @@ public class SearchPane extends WindowPane {
             // Update
             filteredMethods = Filter.filter(loadedMethods, type, visibility, scope);
             filtersHash = currentFiltersHash;
+
+            // Update placeholder
+            String placeholder;
+            if (type == null && visibility == null && scope == null) {
+                placeholder = NO_FILTER_PLACEHOLDER;
+            } else {
+                placeholder = FILTER_APPLIED_PLACEHOLDER;
+            }
+            SwingUtilities.invokeLater(() -> {
+                searchField.setPlaceholder(placeholder.formatted(filteredMethods.size()));
+                searchField.repaint();
+            });
         }
     }
 
