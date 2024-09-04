@@ -1,42 +1,29 @@
-# Joojle &nbsp; ![DEVELOPMENT STATUS: under maintenance](https://badgen.net/badge/DEVELOPMENT%20STATUS/under%20maintenance/orange)
+# Joojle &nbsp; ![DEVELOPMENT STATUS: version 0.2](https://badgen.net/badge/DEVELOPMENT%20STATUS/version%200.2/green)
 
-A knockoff version of Hoogle but for Java.
+A knockoff version of [Hoogle](https://hoogle.haskell.org/) but for Java.
 <br>
 **Heavily** inspired by <a href="https://www.twitch.tv/tsoding">Tsoding</a>, more
-specifically from these <a href="https://youtube.com/playlist?list=PLpM-Dvs8t0VYhYLxY-i7OcvBbDsG4izam&si=aBJkIpS3pjflStvS">streams</a>. Pretty much a translation
-of what he did to Java, no new concept from me
+specifically from these <a href="https://youtube.com/playlist?list=PLpM-Dvs8t0VYhYLxY-i7OcvBbDsG4izam&si=aBJkIpS3pjflStvS">streams</a>. With a couple of added features like filtering by method kind, visibility, or scope.
 
 ## How-to
 ### Usage:
-Currently there is no user interface, maybe would add one later on, but atm compile the source code and:
+A user interface has been implemented which makes the usage pretty straight forward. Simply drop the JAR file you want to search in and type your query. You could also search by method name.
+<br><br>
+If you need help on the query structure you could simply type `/help` and you will be presented with an explanation of the query structure, and a couple of examples.
+
+### Running:
+The project is a Maven project, so after cloning the repository you could simply run:
 ```console
-$ java joojle/Joojle 'path/to/the/jar/file.jar' 'query_of_the_signature_your_are_looking_for'
-```
-You could also additionally supply the maximum number of results to show as a 3rd argument, by default it is 50
-### Query:
-The query should be like so:
-```
-return_type(parameter_1,parameter_2,parameter_3<type_1,? extends type_2>,..)
-```
-Specify only the simple name of the class and not its full name, for example if you are looking for a
-method that returns a String and takes no parameters you would write
-```
-String()
-```
-and not
-```
-java.lang.String()
-```
-Same thing applies to the &lt;types&gt;
-<br>
-As for arrays its:
-```
-int[]()
-```
-Constructors have a return type of the class and not void, for the void returning methods you simply write void
-### Example:
-To look for a method that returns a map like so Map&lt;String,T&gt; and takes a list of something that *supers* T and an array of Strings you would write:
-```
-Map<String,T>(List<? super T>,String[])
+$ mvn clean compile exec:java
 ```
 
+## UI/UX:
+Here are some screenshots of what the user is presented with:
+### First window to drop or select the JAR file:
+![drop](ui_ux_screenshots/dropping.png)
+### When the JAR file has been loaded:
+![loaded](ui_ux_screenshots/loaded.png)
+### Searching for a constructor for example:
+![search constructor](ui_ux_screenshots/search_constructor.png)
+### Searching by name:
+![search name](ui_ux_screenshots/search_name.png)
